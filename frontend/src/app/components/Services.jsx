@@ -108,22 +108,22 @@ function ServiceCard({ service, index }) {
       />
 
       {/* Default state — always visible dark bottom gradient + title */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#1e3418]/90 via-[#1e3418]/20 to-transparent transition-opacity duration-400 group-hover:opacity-0" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0d6ebd]/90 via-[#0d6ebd]/20 to-transparent transition-opacity duration-400 group-hover:opacity-0" />
       <div className="absolute bottom-0 left-0 right-0 p-4 transition-opacity duration-300 group-hover:opacity-0">
-        <div className="w-6 h-0.5 bg-[#a8c5a0] mb-2 rounded" />
+        <div className="w-6 h-0.5 bg-[#cce8ff] mb-2 rounded" />
         <h3 className="text-base font-bold text-white tracking-wide">{service.title}</h3>
       </div>
 
       {/* Hover state — full green overlay with title + description */}
-      <div className=" bg-[#4e6b46]/92 absolute inset-0 flex flex-col items-center justify-center text-center p-6
+      <div className=" bg-[#0d6ebd]/92 absolute inset-0 flex flex-col items-center justify-center text-center p-6
         opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0
         transition-all duration-400 ease-out">
-        <div className="w-8 h-0.5 bg-[#a8c5a0] mb-3 rounded" />
+        <div className="w-8 h-0.5 bg-[#cce8ff] mb-3 rounded" />
         <h3 className="text-base font-bold text-white tracking-wide mb-3">{service.title}</h3>
-        <p className="text-sm text-[#c8dfc4] leading-relaxed">{service.description}</p>
+        <p className="text-sm text-[#cce8ff] leading-relaxed">{service.description}</p>
         <a
           href={service.link}
-          className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-[#a8c5a0] hover:text-white transition-colors duration-200"
+          className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-[#cce8ff] hover:text-white transition-colors duration-200"
           onClick={(e) => e.stopPropagation()}
         >
           Read More
@@ -150,7 +150,7 @@ export default function Services() {
   }, []);
 
   return (
-    <section className="bg-[#f4f7f3] py-14 px-6">
+    <section className="bg-[#daeeff] py-14 px-6">
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}
@@ -160,12 +160,12 @@ export default function Services() {
             headerVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
-          <p className="text-xs uppercase tracking-widest text-[#7d9171] mb-1">What We Do</p>
-          <h2 className="text-3xl sm:text-4xl font-black text-[#2d3d2a] tracking-wide mb-3">
+          <p className="text-xs uppercase tracking-widest text-[#0d6ebd] mb-1">What We Do</p>
+          <h2 className="text-3xl sm:text-4xl font-black text-[#0a3d6e] tracking-wide mb-3">
             Our Services
           </h2>
-          <div className="w-10 h-0.5 bg-[#7d9171] mx-auto mb-4 rounded" />
-          <p className="max-w-xl mx-auto text-sm text-[#4a5e47] leading-relaxed">
+          <div className="w-10 h-0.5 bg-[#0d6ebd]  mx-auto mb-4 rounded" />
+          <p className="max-w-xl mx-auto text-sm text-[#1a5a9e] leading-relaxed">
             MT BOSS Construction delivers end-to-end construction and infrastructure solutions across India — built on precision, trust, and decades of expertise.
           </p>
         </div>

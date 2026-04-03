@@ -62,15 +62,15 @@ export default function QuickServices() {
           position: relative;
           overflow: hidden;
           cursor: pointer;
-          border: 1px solid #c8dfc4;
-          background: #f4f7f3;
+          border: 1px solid #b3d9f7;
+          background: #f0f7ff;
           transition: background 0.3s ease, transform 0.25s ease, z-index 0s;
         }
         .qs-card:hover {
-          background: #4e6b46;
+          background: #0d6ebd;
           transform: scale(1.07);
           z-index: 10;
-          box-shadow: 0 8px 32px rgba(78,107,70,0.35);
+          box-shadow: 0 8px 32px rgba(13,110,189,0.35);
         }
         .qs-card::before {
           content: '';
@@ -97,13 +97,13 @@ export default function QuickServices() {
           font-size: 0.7rem;
           font-weight: 600;
           letter-spacing: 0.04em;
-          color: #2d3d2a;
+          color: #0a3d6e;
           transition: color 0.3s;
           text-align: center;
           line-height: 1.2;
         }
         .qs-card:hover .qs-label {
-          color: #f5f0eb;
+          color: #ffffff;
         }
         .qs-grid-item {
           animation: float-up 0.5s ease both;
@@ -138,21 +138,21 @@ export default function QuickServices() {
               transition: "opacity 0.7s ease, transform 0.7s ease",
             }}
           >
-            <p className="text-xs uppercase tracking-widest text-[#7d9171] mb-1">At Your Doorstep</p>
-            <h2 className="text-2xl sm:text-3xl font-black text-[#2d3d2a] tracking-wide mb-2">
+            <p className="text-xs uppercase tracking-widest text-[#0d6ebd] mb-1">At Your Doorstep</p>
+            <h2 className="text-2xl sm:text-3xl font-black text-[#0a3d6e] tracking-wide mb-2">
               Quick Home Services
             </h2>
-            <div className="w-8 h-0.5 bg-[#7d9171] mx-auto mb-3 rounded" />
-            <p className="text-xs sm:text-sm text-[#4a5e47] max-w-md mx-auto leading-relaxed">
+            <div className="w-8 h-0.5 bg-[#0d6ebd] mx-auto mb-3 rounded" />
+            <p className="text-xs sm:text-sm text-[#1a5a9e] max-w-md mx-auto leading-relaxed">
               Everything your home needs — one call away. Book trusted professionals instantly.
             </p>
           </div>
 
-          {/* Services Grid — no gap, no radius */}
+          {/* Services Grid */}
           <div
             ref={gridRef}
             className="grid grid-cols-5 sm:grid-cols-10"
-            style={{ border: "1px solid #c8dfc4" }}
+            style={{ border: "1px solid #b3d9f7" }}
           >
             {quickServices.map((service, i) => (
               <div
@@ -180,10 +180,7 @@ export default function QuickServices() {
               transition: "opacity 0.7s ease 0.4s, transform 0.7s ease 0.4s",
             }}
           >
-            <a
-              href="/services"
-              className="view-all-btn inline-flex items-center gap-2 px-7 py-3 bg-[#4e6b46] hover:bg-[#3d5537] text-[#f5f0eb] text-xs font-semibold uppercase tracking-widest rounded-sm transition-colors duration-300 shadow-md hover:shadow-lg"
-            >
+            <a href="/services" className="view-all-btn inline-flex items-center gap-2 px-7 py-3 bg-[#0d6ebd] hover:bg-[#0a5a9e] text-white text-xs font-semibold uppercase tracking-widest rounded-sm transition-colors duration-300 shadow-md hover:shadow-lg">
               View All Services
               <svg
                 className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1"

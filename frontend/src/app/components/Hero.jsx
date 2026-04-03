@@ -116,7 +116,7 @@ export default function Hero() {
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(to right, rgba(155, 187, 152, 0.85) 0%, rgba(106, 123, 104, 0.58) 50%, rgba(138, 160, 136, 0.15) 100%)",
+                "linear-gradient(to right, rgba(122, 156, 185, 0.85) 0%, rgba(87, 140, 184, 0.58) 50%,  rgba(83, 76, 76, 0.1) 100%)",
             }}
           />
 
@@ -183,7 +183,7 @@ export default function Hero() {
                 {/* CTA */}
                 <a
                   href="#"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#4e6b46] hover:bg-[#3d5537] text-[#f5f0eb] text-sm uppercase tracking-widest font-semibold rounded transition-all duration-300 group"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#0d6ebd] hover:bg-[#0a5a9e] text-white text-sm uppercase tracking-widest font-semibold rounded transition-all duration-300 group"
                   style={{ fontFamily: "'Georgia', serif" }}
                 >
                   {slide.cta}

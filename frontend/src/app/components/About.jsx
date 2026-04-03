@@ -16,7 +16,7 @@ export default function AboutSection({
   images = DEFAULT_IMAGES,
   bgImage = "https://i.pinimg.com/736x/df/95/db/df95db051ac7c4228bcbaecdc24deb9b.jpg",
   paragraph = "MT BOSS Construction is a technology-led engineering, procurement, and construction company committed to delivering sustainable infrastructure across India. From bridges and highways to industrial complexes and urban developments, we bring precision, integrity, and innovation to every project we undertake — on time and within budget.",
-  aboutLink = "/about-us",
+  aboutLink = "/About-us",
 }) {
   const sectionRef = useRef(null);
   const [visible, setVisible] = useState(false);
@@ -55,7 +55,7 @@ export default function AboutSection({
       }}
     >
       {/* Dark overlay */}
-      <div className="absolute inset-0 bg-[#1e3418]/30" />
+      <div className="absolute inset-0 bg-[#0d6ebd]/20" />
 
       <div
         className={`relative z-10 transition-all duration-700 ease-out ${
@@ -63,18 +63,18 @@ export default function AboutSection({
         }`}
       >
         {/* Subtitle */}
-        <p className="text-xs uppercase tracking-widest text-[#2d4a27] mb-1">{subtitle}</p>
+        <p className="text-xs uppercase tracking-widest text-[#0d6ebd] mb-1">{subtitle}</p>
 
         {/* Title */}
         <h2 className="text-3xl sm:text-5xl font-black tracking-wide mb-2"
-    style={{ color: '#2d4a27', textShadow: '0 2px 8px rgba(0,0,0,0.18)' }}>
+    style={{ color: '#0d6ebd', textShadow: '0 2px 8px rgba(0,0,0,0.18)' }}>
           {title}
         </h2>
 
         {/* Hashtags */}
         <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 mb-6">
           {hashtags.map((tag) => (
-            <span key={tag} className="text-xs font-semibold text-[#2d4a27]">
+            <span key={tag} className="text-xs font-semibold text-[#0d6ebd]">
               {tag}
             </span>
           ))}
@@ -102,7 +102,7 @@ export default function AboutSection({
         </div>
 
         {/* Years label */}
-        <p className="text-base sm:text-lg font-bold uppercase tracking-widest text-[#2d4a27] mb-3">
+        <p className="text-base sm:text-lg font-bold uppercase tracking-widest  mb-3">
           Years Of Experience
         </p>
 
@@ -116,7 +116,7 @@ export default function AboutSection({
                 setTimeout(() => { setImgIndex(i); setFading(false); }, 400);
               }}
               className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === imgIndex ? "w-5 bg-[#2d4a27]" : "w-1.5 bg-[#a8c5a0]/60"
+                i === imgIndex ? "w-5 bg-[#0d6ebd]" : "w-1.5 bg-[#0d6ebd]/40"
               }`}
               aria-label={`Image ${i + 1}`}
             />
@@ -127,14 +127,14 @@ export default function AboutSection({
         {/* <div className="w-10 h-0.5 bg-[#2d4a27] mx-auto mb-4 rounded" /> */}
 
         {/* Paragraph */}
-        <p className="max-w-xl mx-auto text-sm sm:text-base text-[#2d4a27] leading-relaxed mb-6">
+        <p className="max-w-xl mx-auto text-sm sm:text-base text-[#0d6ebd] leading-relaxed mb-6">
           {paragraph}
         </p>
 
         {/* CTA */}
         <a
           href={aboutLink}
-          className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#4e6b46] hover:bg-[#3d5537] text-[#f5f0eb] text-xs font-semibold uppercase tracking-widest rounded transition-all duration-200"
+          className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#0d6ebd] hover:bg-[#0a5a9e] text-white text-xs font-semibold uppercase tracking-widest rounded transition-all duration-200"
         >
           Discover More
           <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
