@@ -34,14 +34,27 @@ function useInView(threshold = 0.1) {
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
-  }, []);
+  }, [threshold]);
   return [ref, inView];
 }
 
 export default function QuickServices() {
   const [headerRef, headerVisible] = useInView(0.1);
   const [gridRef, gridVisible] = useInView(0.05);
-  const [hoveredId, setHoveredId] = useState(null);
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    const checkTheme = () => {
+      // Changed from document.body to document.documentElement
+      setIsDark(document.documentElement.classList.contains("dark-mode"));
+    };
+    checkTheme();
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
+  const themeYellow = "#facc15";
 
   return (
     <>
@@ -49,10 +62,6 @@ export default function QuickServices() {
         @keyframes shimmer {
           0% { background-position: -200% center; }
           100% { background-position: 200% center; }
-        }
-        @keyframes pulse-ring {
-          0% { transform: scale(1); opacity: 0.6; }
-          100% { transform: scale(1.5); opacity: 0; }
         }
         @keyframes float-up {
           0%   { opacity: 0; transform: translateY(20px); }
@@ -62,24 +71,24 @@ export default function QuickServices() {
           position: relative;
           overflow: hidden;
           cursor: pointer;
-          border: 1px solid #b3d9f7;
-          background: #f0f7ff;
-          transition: background 0.3s ease, transform 0.25s ease, z-index 0s;
+          transition: all 0.3s ease;
+          border: 1px solid ${isDark ? '#3f3f46' : '#f3f4f6'};
+          background: ${isDark ? '#18181b' : '#ffffff'};
         }
         .qs-card:hover {
-          background: #0d6ebd;
+          background: ${themeYellow};
           transform: scale(1.07);
           z-index: 10;
-          box-shadow: 0 8px 32px rgba(13,110,189,0.35);
+          box-shadow: 0 8px 32px ${isDark ? 'rgba(250,204,21,0.2)' : 'rgba(234,179,8,0.25)'};
+          border-color: ${themeYellow};
         }
         .qs-card::before {
           content: '';
           position: absolute;
           inset: 0;
-          background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.12) 50%, transparent 70%);
+          background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.4) 50%, transparent 70%);
           background-size: 200% 100%;
           opacity: 0;
-          transition: opacity 0.3s;
         }
         .qs-card:hover::before {
           opacity: 1;
@@ -95,37 +104,22 @@ export default function QuickServices() {
         }
         .qs-label {
           font-size: 0.7rem;
-          font-weight: 600;
+          font-weight: 800;
           letter-spacing: 0.04em;
-          color: #0a3d6e;
+          color: ${isDark ? '#ffffff' : '#1f2937'};
           transition: color 0.3s;
           text-align: center;
           line-height: 1.2;
         }
         .qs-card:hover .qs-label {
-          color: #ffffff;
+          color: #000000;
         }
         .qs-grid-item {
           animation: float-up 0.5s ease both;
         }
-        .view-all-btn {
-          position: relative;
-          overflow: hidden;
-        }
-        .view-all-btn::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%);
-          transform: translateX(-100%);
-          transition: transform 0.45s ease;
-        }
-        .view-all-btn:hover::after {
-          transform: translateX(100%);
-        }
       `}</style>
 
-      <section className="bg-white py-12 px-4 sm:px-6">
+      <section className={`transition-colors duration-500 py-12 px-4 sm:px-6 ${isDark ? 'bg-black' : 'bg-white'}`}>
         <div className="max-w-6xl mx-auto">
 
           {/* Header */}
@@ -138,12 +132,14 @@ export default function QuickServices() {
               transition: "opacity 0.7s ease, transform 0.7s ease",
             }}
           >
-            <p className="text-xs uppercase tracking-widest text-[#0d6ebd] mb-1">At Your Doorstep</p>
-            <h2 className="text-2xl sm:text-3xl font-black text-[#0a3d6e] tracking-wide mb-2">
+            <p className={`text-xs uppercase tracking-widest mb-1 font-black ${isDark ? 'text-[#facc15]' : 'text-[#eab308]'}`}>
+              At Your Doorstep
+            </p>
+            <h2 className={`text-2xl sm:text-3xl font-black tracking-wide mb-2 ${isDark ? 'text-white' : 'text-zinc-900'}`}>
               Quick Home Services
             </h2>
-            <div className="w-8 h-0.5 bg-[#0d6ebd] mx-auto mb-3 rounded" />
-            <p className="text-xs sm:text-sm text-[#1a5a9e] max-w-md mx-auto leading-relaxed">
+            <div className={`w-8 h-0.5 mx-auto mb-3 rounded ${isDark ? 'bg-[#facc15]' : 'bg-[#eab308]'}`} />
+            <p className={`text-xs sm:text-sm max-w-md mx-auto leading-relaxed font-medium ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
               Everything your home needs — one call away. Book trusted professionals instantly.
             </p>
           </div>
@@ -151,8 +147,8 @@ export default function QuickServices() {
           {/* Services Grid */}
           <div
             ref={gridRef}
-            className="grid grid-cols-5 sm:grid-cols-10"
-            style={{ border: "1px solid #b3d9f7" }}
+            className="grid grid-cols-5 sm:grid-cols-10 shadow-sm"
+            style={{ border: isDark ? "1px solid #3f3f46" : "1px solid #f3f4f6" }}
           >
             {quickServices.map((service, i) => (
               <div
@@ -162,8 +158,6 @@ export default function QuickServices() {
                   animationDelay: gridVisible ? `${i * 0.04}s` : "none",
                   animationPlayState: gridVisible ? "running" : "paused",
                 }}
-                onMouseEnter={() => setHoveredId(service.id)}
-                onMouseLeave={() => setHoveredId(null)}
               >
                 <span className="qs-icon">{service.icon}</span>
                 <span className="qs-label">{service.label}</span>
@@ -180,13 +174,14 @@ export default function QuickServices() {
               transition: "opacity 0.7s ease 0.4s, transform 0.7s ease 0.4s",
             }}
           >
-            <a href="/services" className="view-all-btn inline-flex items-center gap-2 px-7 py-3 bg-[#0d6ebd] hover:bg-[#0a5a9e] text-white text-xs font-semibold uppercase tracking-widest rounded-sm transition-colors duration-300 shadow-md hover:shadow-lg">
+            <a href="/quick" 
+               className={`inline-flex items-center gap-2 px-8 py-3 text-xs font-black uppercase tracking-widest rounded transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105 active:scale-95 bg-[#facc15] text-black hover:bg-[#eab308]`}>
               View All Services
               <svg
                 className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1"
                 fill="none" stroke="currentColor" viewBox="0 0 24 24"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </a>
           </div>

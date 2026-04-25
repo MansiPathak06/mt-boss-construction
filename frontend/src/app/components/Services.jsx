@@ -1,82 +1,32 @@
-"use client"
+"use client";
 import { useState, useEffect, useRef } from "react";
+import Link from "next/link"; 
 
-const services = [
+const featuredServices = [
   {
     id: 1,
     title: "Commercial Buildings",
-    description:
-      "From corporate offices to retail complexes, we design and construct world-class commercial spaces built to last — combining structural integrity with modern aesthetics.",
+    description: "From corporate offices to retail complexes, we design and construct world-class commercial spaces built to last.",
     image: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=80",
-    link: "#",
+    link: "/services/all", // Confirm folder name is 'services' not 'Services'
   },
   {
     id: 2,
     title: "Hotel & Hospitality",
-    description:
-      "We deliver premium hotel and resort construction with meticulous attention to interiors, MEP systems, and guest experience — on schedule and budget.",
+    description: "We deliver premium hotel and resort construction with meticulous attention to interiors and guest experience.",
     image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80",
-    link: "#",
+    link: "/services/all",
   },
   {
     id: 3,
     title: "Residential Projects",
-    description:
-      "Affordable housing to luxury villas — MT BOSS builds residential spaces that marry comfort, safety, and enduring quality for every lifestyle.",
+    description: "Affordable housing to luxury villas — MT BOSS builds residential spaces that marry comfort and safety.",
     image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80",
-    link: "#",
-  },
-  {
-    id: 4,
-    title: "Industrial & Warehousing",
-    description:
-      "We construct robust industrial plants, factories, and large-scale warehouses engineered for operational efficiency and long-term durability.",
-    image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80",
-    link: "#",
-  },
-  {
-    id: 5,
-    title: "Infrastructure & Roads",
-    description:
-      "Our infrastructure division handles highways, bridges, flyovers, and urban road networks — delivering precision-engineered public works that connect communities.",
-    image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80",
-    link: "#",
-  },
-  {
-    id: 6,
-    title: "EPC Contracting",
-    description:
-      "End-to-end Engineering, Procurement & Construction services — we handle design, sourcing, and execution under one roof for seamless project delivery.",
-    image: "https://images.unsplash.com/photo-1513828583688-c52646db42da?w=800&q=80",
-    link: "#",
-  },
-  {
-    id: 7,
-    title: "Real Estate Development",
-    description:
-      "From land acquisition to possession, MT BOSS manages full-cycle real estate development — residential townships, mixed-use projects, and commercial hubs.",
-    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80",
-    link: "#",
-  },
-  {
-    id: 8,
-    title: "Interior & Fit-Out Works",
-    description:
-      "We offer turnkey interior fit-out solutions for offices, hotels, and retail spaces — blending function with refined aesthetics tailored to your brand.",
-    image: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&q=80",
-    link: "#",
-  },
-  {
-    id: 9,
-    title: "Project Management",
-    description:
-      "Our expert consultants provide end-to-end project management — planning, scheduling, cost control, and quality assurance across all construction phases.",
-    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80",
-    link: "#",
+    link: "/services/all",
   },
 ];
 
-function ServiceCard({ service, index }) {
+function ServiceCard({ service, index, isDark }) {
   const cardRef = useRef(null);
   const [visible, setVisible] = useState(false);
 
@@ -92,91 +42,88 @@ function ServiceCard({ service, index }) {
   return (
     <div
       ref={cardRef}
-      className="group relative overflow-hidden rounded-sm shadow-md hover:shadow-xl cursor-pointer"
+      className={`group relative overflow-hidden rounded-sm cursor-pointer border transition-all duration-500 ${
+        isDark ? 'border-zinc-800 bg-zinc-900' : 'border-gray-100 bg-white'
+      }`}
       style={{
-        height: "280px",
+        height: "400px",
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(32px)",
-        transition: `opacity 0.6s ease ${index * 0.08}s, transform 0.6s ease ${index * 0.08}s, box-shadow 0.3s ease`,
+        transition: `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`,
       }}
     >
-      {/* Background Image */}
       <img
         src={service.image}
         alt={service.title}
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-80"
       />
-
-      {/* Default state — always visible dark bottom gradient + title */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0d6ebd]/90 via-[#0d6ebd]/20 to-transparent transition-opacity duration-400 group-hover:opacity-0" />
-      <div className="absolute bottom-0 left-0 right-0 p-4 transition-opacity duration-300 group-hover:opacity-0">
-        <div className="w-6 h-0.5 bg-[#cce8ff] mb-2 rounded" />
-        <h3 className="text-base font-bold text-white tracking-wide">{service.title}</h3>
+      
+      <div className={`absolute inset-0 bg-gradient-to-t ${isDark ? 'from-black via-black/40' : 'from-black/90 via-black/20'} to-transparent transition-opacity group-hover:opacity-0`} />
+      
+      <div className="absolute bottom-0 left-0 right-0 p-8 group-hover:opacity-0 group-hover:translate-y-4 transition-all duration-300">
+        <div className="w-12 h-0.5 bg-[#facc15] mb-4" />
+        <h3 className="text-2xl font-black text-white uppercase tracking-tighter leading-none">{service.title}</h3>
       </div>
 
-      {/* Hover state — full green overlay with title + description */}
-      <div className=" bg-[#0d6ebd]/92 absolute inset-0 flex flex-col items-center justify-center text-center p-6
-        opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0
-        transition-all duration-400 ease-out">
-        <div className="w-8 h-0.5 bg-[#cce8ff] mb-3 rounded" />
-        <h3 className="text-base font-bold text-white tracking-wide mb-3">{service.title}</h3>
-        <p className="text-sm text-[#cce8ff] leading-relaxed">{service.description}</p>
-        <a
-          href={service.link}
-          className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-[#cce8ff] hover:text-white transition-colors duration-200"
-          onClick={(e) => e.stopPropagation()}
+      {/* Button click handling via Link */}
+      <div className="absolute inset-0 bg-[#facc15] flex flex-col items-center justify-center text-center p-8 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 z-20">
+        <h3 className="text-2xl font-black text-black uppercase mb-4 tracking-tighter">{service.title}</h3>
+        <p className="text-sm text-black font-bold leading-relaxed mb-8">{service.description}</p>
+        
+        {/* Is Link par click karte hi page change ho jayega */}
+        <Link 
+          href={service.link} 
+          className="px-8 py-3 bg-black text-[#facc15] text-[10px] font-black uppercase tracking-[0.2em] hover:scale-105 transition-transform"
         >
-          Read More
-          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </a>
+          View Details
+        </Link>
       </div>
     </div>
   );
 }
 
 export default function Services() {
-  const headerRef = useRef(null);
-  const [headerVisible, setHeaderVisible] = useState(false);
+  const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setHeaderVisible(true); },
-      { threshold: 0.1 }
-    );
-    if (headerRef.current) observer.observe(headerRef.current);
+    const checkTheme = () => {
+      setIsDark(document.documentElement.classList.contains("dark-mode"));
+    };
+    checkTheme();
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
     return () => observer.disconnect();
   }, []);
 
   return (
-    <section className="bg-[#daeeff] py-14 px-6">
+    <section className={`py-24 px-6 transition-colors duration-500 ${isDark ? 'bg-black' : 'bg-white'}`}>
       <div className="max-w-7xl mx-auto">
-
-        {/* Header */}
-        <div
-          ref={headerRef}
-          className={`text-center mb-10 transition-all duration-700 ease-out ${
-            headerVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
-        >
-          <p className="text-xs uppercase tracking-widest text-[#0d6ebd] mb-1">What We Do</p>
-          <h2 className="text-3xl sm:text-4xl font-black text-[#0a3d6e] tracking-wide mb-3">
-            Our Services
+        <div className="text-center mb-20">
+          <p className="text-[#facc15] text-xs font-black uppercase tracking-[0.5em] mb-4">Core Expertise</p>
+          <h2 className={`text-4xl md:text-6xl font-black uppercase tracking-tighter mb-6 ${isDark ? 'text-white' : 'text-zinc-900'}`}>
+            Major <span className="text-[#facc15]">Services</span>
           </h2>
-          <div className="w-10 h-0.5 bg-[#0d6ebd]  mx-auto mb-4 rounded" />
-          <p className="max-w-xl mx-auto text-sm text-[#1a5a9e] leading-relaxed">
-            MT BOSS Construction delivers end-to-end construction and infrastructure solutions across India — built on precision, trust, and decades of expertise.
-          </p>
+          <div className="w-20 h-1.5 bg-[#facc15] mx-auto rounded-full" />
         </div>
 
-        {/* Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service, i) => (
-            <ServiceCard key={service.id} service={service} index={i} />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+          {featuredServices.map((service, i) => (
+            <ServiceCard key={service.id} service={service} index={i} isDark={isDark} />
           ))}
         </div>
 
+        <div className="text-center mt-20">
+          <Link 
+            href="/Services/all" 
+            className="group relative inline-flex items-center gap-4 px-12 py-5 bg-transparent border-2 border-[#facc15] text-[#facc15] font-black uppercase text-xs tracking-[0.3em] overflow-hidden transition-all hover:text-white"
+          >
+            <span className="absolute inset-0 bg-[#facc15] translate-y-full transition-transform group-hover:translate-y-0 -z-10" />
+            Explore All Services
+            <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </Link>
+        </div>
       </div>
     </section>
   );

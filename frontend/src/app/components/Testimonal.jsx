@@ -9,7 +9,7 @@ const testimonials = [
     role: "Managing Director",
     photo: "https://randomuser.me/api/portraits/men/32.jpg",
     rating: 5,
-    review: "MT BOSS Construction delivered our commercial complex 2 weeks ahead of schedule. Their attention to detail, quality of materials, and professionalism is unmatched. We have already signed them for our next project.",
+    review: "MT BOSS Construction delivered our commercial complex 2 weeks ahead of schedule. Their attention to detail, quality of materials, and professionalism is unmatched.",
   },
   {
     id: 2,
@@ -18,7 +18,7 @@ const testimonials = [
     role: "CEO",
     photo: "https://randomuser.me/api/portraits/women/44.jpg",
     rating: 5,
-    review: "Our 5-star hotel project was handled with exceptional care by MT BOSS. From MEP systems to interior fit-outs, every detail was perfect. The team was responsive, transparent, and truly committed to excellence.",
+    review: "Our 5-star hotel project was handled with exceptional care by MT BOSS. From MEP systems to interior fit-outs, every detail was perfect. The team was responsive and transparent.",
   },
   {
     id: 3,
@@ -27,7 +27,7 @@ const testimonials = [
     role: "Director of Operations",
     photo: "https://randomuser.me/api/portraits/men/55.jpg",
     rating: 5,
-    review: "We entrusted MT BOSS with our 3-lakh sq ft warehouse project. They managed everything seamlessly — design, procurement, and execution. Delivery was on time and within the agreed budget. Highly recommended.",
+    review: "We entrusted MT BOSS with our 3-lakh sq ft warehouse project. They managed everything seamlessly — design, procurement, and execution. Delivery was on time.",
   },
   {
     id: 4,
@@ -36,7 +36,7 @@ const testimonials = [
     role: "Founder",
     photo: "https://randomuser.me/api/portraits/women/68.jpg",
     rating: 5,
-    review: "MT BOSS transformed our vision into a stunning residential township. Their sustainable construction approach and use of modern technology gave us a product that our buyers absolutely love. Outstanding work.",
+    review: "MT BOSS transformed our vision into a stunning residential township. Their sustainable construction approach and use of modern technology gave us a product buyers love.",
   },
   {
     id: 5,
@@ -45,7 +45,7 @@ const testimonials = [
     role: "Project Head",
     photo: "https://randomuser.me/api/portraits/men/77.jpg",
     rating: 5,
-    review: "The infrastructure division of MT BOSS executed a 42km highway stretch with precision and speed. Safety standards were strictly maintained and the quality of construction exceeded our expectations.",
+    review: "The infrastructure division executed a 42km highway stretch with precision. Safety standards were strictly maintained and the quality exceeded our expectations.",
   },
   {
     id: 6,
@@ -54,7 +54,7 @@ const testimonials = [
     role: "General Manager",
     photo: "https://randomuser.me/api/portraits/women/12.jpg",
     rating: 5,
-    review: "From foundation to finish, MT BOSS delivered our IT park with zero compromise on quality. Their project management team was always available and kept us informed at every stage. A truly reliable partner.",
+    review: "From foundation to finish, MT BOSS delivered our IT park with zero compromise on quality. Their project management team was always available and reliable.",
   },
 ];
 
@@ -62,7 +62,7 @@ function StarRating({ rating }) {
   return (
     <div className="flex items-center gap-0.5">
       {[...Array(5)].map((_, i) => (
-        <svg key={i} className={`w-4 h-4 ${i < rating ? "text-yellow-400" : "text-gray-300"}`} fill="currentColor" viewBox="0 0 20 20">
+        <svg key={i} className={`w-4 h-4 ${i < rating ? "text-[#facc15]" : "text-gray-300 opacity-30"}`} fill="currentColor" viewBox="0 0 20 20">
           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
         </svg>
       ))}
@@ -75,15 +75,24 @@ export default function TestimonialsSection() {
   const [animating, setAnimating] = useState(false);
   const [direction, setDirection] = useState("next");
   const [progress, setProgress] = useState(0);
+  const [isDark, setIsDark] = useState(false);
   const timerRef = useRef(null);
   const progressRef = useRef(null);
   const startTimeRef = useRef(null);
   const AUTOPLAY_DELAY = 5000;
 
-  const resetProgress = () => {
+  useEffect(() => {
+    const checkTheme = () => setIsDark(document.body.classList.contains("dark-mode"));
+    checkTheme();
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.body, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
+  const resetProgress = useCallback(() => {
     setProgress(0);
     startTimeRef.current = performance.now();
-  };
+  }, []);
 
   const goTo = useCallback((index, dir = "next") => {
     if (animating || index === current) return;
@@ -92,18 +101,15 @@ export default function TestimonialsSection() {
     setCurrent(index);
     resetProgress();
     setTimeout(() => setAnimating(false), 600);
-  }, [animating, current]);
+  }, [animating, current, resetProgress]);
 
-  const next = () => goTo((current + 1) % testimonials.length, "next");
-  const prev = () => goTo((current - 1 + testimonials.length) % testimonials.length, "prev");
+  const next = useCallback(() => goTo((current + 1) % testimonials.length, "next"), [current, goTo]);
+  const prev = useCallback(() => goTo((current - 1 + testimonials.length) % testimonials.length, "prev"), [current, goTo]);
 
   useEffect(() => {
-    timerRef.current = setInterval(() => {
-      setCurrent((c) => (c + 1) % testimonials.length);
-      resetProgress();
-    }, AUTOPLAY_DELAY);
+    timerRef.current = setInterval(next, AUTOPLAY_DELAY);
     return () => clearInterval(timerRef.current);
-  }, [current]);
+  }, [next]);
 
   useEffect(() => {
     startTimeRef.current = performance.now();
@@ -118,93 +124,123 @@ export default function TestimonialsSection() {
   }, [current]);
 
   const t = testimonials[current];
+  const themeYellow = "#facc15";
 
   return (
-    <section className="bg-[#f0f7ff] py-16 px-6">
+    <section className={`transition-colors duration-500 py-20 px-6 ${isDark ? 'bg-black' : 'bg-white'}`}>
       <div className="max-w-4xl mx-auto">
 
         {/* Header */}
-        <div className="text-center mb-10">
-          <p className="text-xs uppercase tracking-widest text-[#0d6ebd] mb-2">Client Reviews</p>
-          <h2 className="text-3xl sm:text-4xl font-black text-[#0a3d6e] mb-3">What Our Clients Say</h2>
-          <div className="w-10 h-0.5 bg-[#0d6ebd] mx-auto rounded" />
+        <div className="text-center mb-12">
+          <p className="text-xs font-black uppercase tracking-[0.3em] mb-2" style={{ color: themeYellow }}>
+            Success Stories
+          </p>
+          <h2 className={`text-3xl sm:text-5xl font-black tracking-tighter mb-4 uppercase ${isDark ? 'text-white' : 'text-zinc-900'}`}>
+            Client Feedback
+          </h2>
+          <div className="w-12 h-1 bg-[#facc15] mx-auto rounded-full" />
         </div>
 
         {/* Quote Icon */}
-        <div className="text-center mb-6">
-          <svg className="w-12 h-12 text-[#0d6ebd]/20 mx-auto" fill="currentColor" viewBox="0 0 24 24">
+        <div className="text-center mb-8">
+          <svg className="w-16 h-16 opacity-10 mx-auto" style={{ color: themeYellow }} fill="currentColor" viewBox="0 0 24 24">
             <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
           </svg>
         </div>
 
         {/* Slide Card */}
         <div
-          className="bg-white rounded-sm shadow-xl p-8 sm:p-12 relative overflow-hidden"
+          className={`rounded-sm shadow-2xl p-8 sm:p-14 relative overflow-hidden transition-all duration-500 border ${
+            isDark ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-zinc-100'
+          }`}
           style={{
             opacity: animating ? 0 : 1,
             transform: animating
               ? direction === "next" ? "translateX(40px)" : "translateX(-40px)"
               : "translateX(0)",
-            transition: "opacity 0.4s ease, transform 0.4s ease",
           }}
         >
-          <div className="absolute top-0 left-0 right-0 h-1 bg-[#0d6ebd]" />
+          <div className="absolute top-0 left-0 right-0 h-1.5 bg-[#facc15]" />
 
-          <div className="flex justify-center mb-6">
+          <div className="flex justify-center mb-8">
             <StarRating rating={t.rating} />
           </div>
 
-          <p className="text-base sm:text-lg text-gray-600 leading-relaxed text-center mb-8 max-w-2xl mx-auto italic">
+          <p className={`text-lg sm:text-2xl font-medium leading-relaxed text-center mb-10 max-w-2xl mx-auto italic tracking-tight ${
+            isDark ? 'text-zinc-300' : 'text-zinc-700'
+          }`}>
             "{t.review}"
           </p>
 
-          <div className="w-10 h-0.5 bg-[#0d6ebd] mx-auto mb-6 rounded" />
-
-          <div className="flex flex-col items-center gap-3">
-            <img src={t.photo} alt={t.name} className="w-16 h-16 rounded-full object-cover border-4 border-[#0d6ebd] shadow-md" />
+          <div className="flex flex-col items-center gap-4">
+            <img 
+              src={t.photo} 
+              alt={t.name} 
+              className="w-20 h-20 rounded-full object-cover border-4 shadow-xl" 
+              style={{ borderColor: themeYellow }}
+            />
             <div className="text-center">
-              <p className="text-sm font-black text-[#0a3d6e] uppercase tracking-wide">{t.name}</p>
-              <p className="text-xs text-[#0d6ebd] font-semibold">{t.role}</p>
-              <p className="text-xs text-gray-400 uppercase tracking-widest mt-0.5">{t.company}</p>
+              <p className={`text-base font-black uppercase tracking-widest ${isDark ? 'text-white' : 'text-zinc-900'}`}>
+                {t.name}
+              </p>
+              <p className="text-sm font-bold uppercase tracking-wide" style={{ color: themeYellow }}>
+                {t.role}
+              </p>
+              <p className="text-[10px] text-zinc-500 font-black uppercase tracking-[0.2em] mt-1">
+                {t.company}
+              </p>
             </div>
           </div>
         </div>
 
         {/* Controls */}
-        <div className="flex items-center justify-center gap-6 mt-8">
-          <button onClick={prev} className="w-10 h-10 flex items-center justify-center rounded-full border border-[#0d6ebd]/50 bg-white hover:bg-[#0d6ebd] text-[#0d6ebd] hover:text-white transition-all duration-200 shadow-sm">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
+        <div className="flex flex-col items-center gap-8 mt-12">
+          <div className="flex items-center gap-8">
+            <button 
+              onClick={prev} 
+              className={`w-12 h-12 flex items-center justify-center rounded-full border-2 transition-all duration-300 hover:scale-110 active:scale-95 ${
+                isDark 
+                ? 'border-zinc-800 text-white hover:bg-zinc-800' 
+                : 'border-zinc-200 text-zinc-900 hover:bg-zinc-100'
+              }`}
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
 
-          <div className="flex items-center gap-2">
-            {testimonials.map((_, i) => (
-              <button key={i} onClick={() => goTo(i, i > current ? "next" : "prev")} aria-label={`Go to ${i + 1}`}>
-                {i === current ? (
-                  <span className="relative block w-10 h-1.5 rounded-full bg-[#0d6ebd]/30 overflow-hidden">
-                    <span className="absolute left-0 top-0 h-full bg-[#0d6ebd] rounded-full" style={{ width: `${progress}%` }} />
-                  </span>
-                ) : (
-                  <span className="block w-4 h-1.5 rounded-full bg-[#0d6ebd]/30 hover:bg-[#0d6ebd]/60 transition-colors duration-200" />
-                )}
-              </button>
-            ))}
+            <div className="flex items-center gap-3">
+              {testimonials.map((_, i) => (
+                <button key={i} onClick={() => goTo(i, i > current ? "next" : "prev")} aria-label={`Go to ${i + 1}`}>
+                  {i === current ? (
+                    <span className={`relative block w-14 h-2 rounded-full overflow-hidden ${isDark ? 'bg-zinc-800' : 'bg-zinc-100'}`}>
+                      <span className="absolute left-0 top-0 h-full bg-[#facc15] rounded-full" style={{ width: `${progress}%` }} />
+                    </span>
+                  ) : (
+                    <span className={`block w-4 h-2 rounded-full transition-all duration-300 ${isDark ? 'bg-zinc-800 hover:bg-zinc-700' : 'bg-zinc-200 hover:bg-zinc-300'}`} />
+                  )}
+                </button>
+              ))}
+            </div>
+
+            <button 
+              onClick={next} 
+              className={`w-12 h-12 flex items-center justify-center rounded-full border-2 transition-all duration-300 hover:scale-110 active:scale-95 ${
+                isDark 
+                ? 'border-zinc-800 text-white hover:bg-zinc-800' 
+                : 'border-zinc-200 text-zinc-900 hover:bg-zinc-100'
+              }`}
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
           </div>
 
-          <button onClick={next} className="w-10 h-10 flex items-center justify-center rounded-full border border-[#0d6ebd]/50 bg-white hover:bg-[#0d6ebd] text-[#0d6ebd] hover:text-white transition-all duration-200 shadow-sm">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
+          <p className="text-sm font-black tracking-[0.5em] opacity-30" style={{ color: isDark ? '#fff' : '#000' }}>
+            {String(current + 1).padStart(2, "0")} / {String(testimonials.length).padStart(2, "0")}
+          </p>
         </div>
-
-        {/* Counter */}
-        <p className="text-center text-xs text-[#0d6ebd]/60 tracking-widest mt-4" style={{ fontFamily: "'Georgia', serif" }}>
-          <span className="font-bold text-[#0d6ebd]">{String(current + 1).padStart(2, "0")}</span>
-          {" / "}
-          {String(testimonials.length).padStart(2, "0")}
-        </p>
 
       </div>
     </section>

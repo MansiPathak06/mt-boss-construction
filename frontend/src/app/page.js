@@ -1,25 +1,28 @@
 import React from 'react';
-import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import AboutSection from './components/About';
 import Services from './components/Services';
 import QuickServices from './components/QuickServices';
-import TestimonialsPage from './Testimonials/page';
 import TestimonialsSection from './components/Testimonal';
 import Footer from './components/Footer';
+import FeaturedProjects from './components/FeaturedProjects';
+import ExperienceSection from './components/ExperienceSection';
 
-const page = () => {
+const Page = () => {
+  // Ab props pass karne ki zaroorat nahi hai.
+  // Har component apne andar se global theme detect kar lega.
   return (
-    <div>
-      <Hero/>
-      <AboutSection/>
-      <Services/>
-      <QuickServices/>
-      <TestimonialsSection/>
-      <Footer/>
-      
+    <div className="transition-colors duration-500">
+      <Hero />
+      <AboutSection />
+      <Services />
+      <QuickServices />
+      <FeaturedProjects />
+      <ExperienceSection />
+      <TestimonialsSection />
+      <Footer />
     </div>
   );
 }
 
-export default page;
+export default Page;
